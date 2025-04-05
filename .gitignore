@@ -1,0 +1,14 @@
+
+# Enviroment
+.env
+.venv/
+venv/
+ENV/
+env/
+*.env
+
+# IDE
+.vscode
+
+# Experimenting file
+main.py
