@@ -97,21 +97,22 @@ def get_weather_info(city):
 🔼 Pressure: {pressure} hPa"""
         
     else:
-        return f"Failed to retreive data {response.status_code}"
-
-
+        return f"Failed to retreive data. Error coce: {response.status_code}"
 
 ## Getting the API key
 load_dotenv()
 WEATHER_API_KEY = os.getenv('WEATHER_API_KEY')
 
+
 print("====================")
-print("🌤️  Weather App CLI")
+print("🌤️   Weather App CLI")
 print("====================")
 
 while True:
+    ## Prompt the user for a city
     user_input = input("Enter the name of the city: ")
     
+    ## If the user types something
     if user_input:
         ## Windows OS
         if platform.system() == "Windows":
@@ -127,32 +128,3 @@ while True:
 
         ## break out of the loop
         break
-
-
-
-"""
-===========================
-🌤️  Weather App CLI
-===========================
-
-📍 Location: Jerusalem, Israel  
-📅 Date: Saturday, April 5, 2025  
-🕒 Time: 6:00 PM
-
-🌡️ Temperature: 25°C
-💧 Humidity: 60%  
-🌬️ Wind: 12 km/h NW
-☁️ Condition: Partly Cloudy
-🔼 Pressure: 69 hPa
-
-🧭 Forecast for the next 3 days:
----------------------------
-📅 Sun - 🌞 Clear - 24°C / 16°C  
-📅 Mon - 🌦️ Showers - 21°C / 15°C  
-📅 Tue - ☁️ Cloudy - 20°C / 14°C  
-
-===========================
-🔍 Type `change` to select a new city
-❌ Type `exit` to close the app
-===========================
-"""
