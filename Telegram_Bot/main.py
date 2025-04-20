@@ -5,6 +5,7 @@ import google.generativeai as genai
 import os
 from dotenv import load_dotenv
 import json
+import requests
 
 # Get API keys from .env file
 load_dotenv()
@@ -14,10 +15,21 @@ GEMINI_API: Final = os.getenv("GEMINI_API")
 
 # Commands
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Howdy!")
+    await update.message.reply_text("Bot started.")
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("I'm a useless ass bot that's still under development. I'll be useful one day.")
+    await update.message.reply_text("I'm a useless ass chatbot that's still under development. I'll be useful one day.")
+
+async def generate_useless_fact(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    url = "https://uselessfacts.jsph.pl/api/v2/facts/random"
+    response = requests.get(url)
+
+    if response.status_code == 200:
+        data = response.json()
+        fact = data["text"].strip('"')
+        await update.message.reply_text(fact)
+    else:
+        await update.message.reply_text(f"Error code {response.status_code}")
 
 
 # Responses
@@ -30,12 +42,12 @@ def handle_response(user_id: str, user_message: str) -> str:
 
     # Set up Gemini
     model = genai.GenerativeModel(
-        model_name="gemini-1.5-flash",
+        model_name="gemini-2.0-flash",
         system_instruction=(
-            "You are a friendly and helpful Telegram bot. "
-            "Always act like a real human in conversations. "
-            "Write concise and simple responses. No emojis. "
-            "You remember details about the user like name, hobbies, preferences. "
+            "You are a friendly and helpful Telegram bot."
+            "Always act like a real human in conversations."
+            "Write concise and understandable responses."
+            "You remember details about the user like name, hobbies, preferences."
             "If the user says something new about themselves, extract and store it."
         )
     )
@@ -93,6 +105,7 @@ if __name__ == "__main__":
     # Commands
     app.add_handler(CommandHandler('start', start_command))
     app.add_handler(CommandHandler('help', help_command))
+    app.add_handler(CommandHandler('useless_fact', generate_useless_fact))
 
     # Messages
     app.add_handler(MessageHandler(filters.TEXT, handle_message))
